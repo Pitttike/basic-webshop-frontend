@@ -4,6 +4,7 @@ import Products from './components/Products'
 import Footer from './components/Footer'
 import Menu from './components/Menu'
 import Cart from './components/Cart'
+import AuthProvider from './components/AuthProvider'
 function App() {
   const router = createBrowserRouter([
     {
@@ -24,14 +25,16 @@ function App() {
     },
     {
       path: '/cart',
-      element: <Cart userId='2'/>
+      element: <Cart userId='1'/>
     }
 
   ])
 
   return <>
   <Menu/>
+  <AuthProvider>
   <RouterProvider router={router} />
+  </AuthProvider>
   <Footer />
   </>
 }

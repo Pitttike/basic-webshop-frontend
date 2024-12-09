@@ -13,7 +13,7 @@ function Product(props: ProductProps) {
             {
                 props.cartMode ?
                     <button onClick={props.onRemove}><img src="remove_sign.png" alt="törlés gomb" /></button> :
-                    <button className="cart-button" onClick={() => { addProductToCart(2, props.id!) }}>  <img className="cart-icon" src="cart_icon.svg" alt="kosár gomb" /> </button>
+                    <button className="cart-button" onClick={() => { addProductToCart(1, props.id!) }}>  <img className="cart-icon" src="cart_icon.svg" alt="kosár gomb" /> </button>
 
             }
         </div>

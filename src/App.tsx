@@ -1,42 +1,39 @@
 import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Products from './components/Products'
 import Footer from './components/Footer'
 import Menu from './components/Menu'
 import Cart from './components/Cart'
-import AuthProvider from './components/AuthProvider'
+import Login from './components/Login'
+import AuthProvider, { ProtectedRoute } from './contexts/AuthProvider'
+import Register from './components/Register'
+
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Products/>,
-    },
-    {
-      path: '/products',
-      element:  <Products/>
-    },
-    {
-      path: '/register',
-      element: <h1>Regisztráció</h1>
-    },
-    {
-      path: '/login',
-      element: <h1>Bejelentkezés</h1>
-    },
-    {
-      path: '/cart',
-      element: <Cart userId='1'/>
-    }
 
-  ])
-
-  return <>
-  <Menu/>
-  <AuthProvider>
-  <RouterProvider router={router} />
-  </AuthProvider>
-  <Footer />
-  </>
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <div className="app-container">
+          <Menu />
+          <Routes>
+            <Route path="/" element={<Navigate to="/products" replace />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <Cart />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+          <Footer />
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
+  )
 }
 
 export default App

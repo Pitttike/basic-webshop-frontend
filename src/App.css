@@ -1,3 +1,10 @@
 img {
     max-width: 200px;
 }
+
+.delete-button {
+    background-image: url("../public/trash.png");
+    border: 10px solid red;
+    width: 100px;
+    height: 100px;
+}

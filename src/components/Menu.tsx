@@ -1,9 +1,18 @@
+import { useAuth } from "../contexts/AuthProvider";
+
+
 function Menu() {
+    const { token, logout } = useAuth();
     return <nav>
-        <a href="/profile"><img src="profile-icon.png" alt="Profil ikon" /></a>
-        <a href="/register">Regisztráció</a>
-        <a href="/login">Bejelentkezés</a>
-        <a href="/cart"><img src="cart-image.png" alt="Kosár gomb" /></a>
+        <h2>PCX Webshop</h2>
+        <input type="" name="search" placeholder="Keresés..."/>
+        {token ? ( <button onClick={logout}>Kijelentkezés</button> ) :
+            (<>
+                <a href="/register">Regisztráció</a>
+                <a href="/login">Bejelentkezés</a>
+            </>)}
+
+        <a href="/cart" className="refer-to-cart"/>
     </nav>
 }
 

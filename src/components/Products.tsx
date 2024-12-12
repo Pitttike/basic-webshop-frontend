@@ -4,7 +4,7 @@ import Product from './Product'
 
 function Products() {
     const [products, setProducts] = useState<ProductProps[]>([])
-
+    
     useEffect(() => {
         const fillProducts = async () => {
             try {

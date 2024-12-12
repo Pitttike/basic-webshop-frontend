@@ -1,6 +1,7 @@
 import ProductProps from "./ProductProps";
 
-export interface User {
-    userName : string;
-    cartItems : ProductProps[];
+export default interface User {
+    id: number;
+    username? : string;
+    cartItems? : ProductProps[];
 }

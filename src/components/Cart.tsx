@@ -1,34 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductProps from "../ProductProps";
-import { User } from "../User";
+import User from "../User";
 import Product from "./Product";
-interface CartProps {
-    userId: string;
-}
+import { useAuth } from "../contexts/AuthProvider";
+function Cart() {
+    const auth = useAuth();
 
-function Cart(props: CartProps) {
     const [cartItems, setCartItems] = useState<ProductProps[]>([]);
+    const totalPrice = useMemo(() => {
+        return cartItems.reduce((totalPrice, cartitem) => cartitem.price + totalPrice, 0);
+    }, [cartItems]);
 
     useEffect(() => {
         async function load() {
-            const result = await fetch(`http://localhost:3000/users/${props.userId}`)
+            if (!auth?.user?.id) return;
+            const result = await fetch(`http://localhost:3000/users/${auth?.user?.id}`)
             const user: User = await result.json();
-            setCartItems(user.cartItems);
+            setCartItems(user.cartItems!);
+
         }
         load();
     }, [])
+
     const handleRemove = async (productId: number, cartIndex: number) => {
-        await fetch(`http://localhost:3000/users/${props.userId}/cartItems/${productId}`, { method: 'DELETE' });
-        setCartItems(prevItems => prevItems.filter((_, index) => index!==cartIndex));
+        await fetch(`http://localhost:3000/users/${auth?.user?.id}/cartItems/${productId}`, { method: 'DELETE' });
+        setCartItems(prevItems => prevItems.filter((_, index) => index !== cartIndex));
     }
+    
     return <div>
         <h1>Kosár</h1>
-        {
-            cartItems.map(
-                product => <Product key={product.id} id={product.id} title={product.title} price={product.price} imgSrc={product.imgSrc} cartMode={true} onRemove={() => handleRemove(product.id!, cartItems.indexOf(product))} />
-            )
-
-        }
+        <ul>
+            {cartItems.map((product) => (
+                <li key={product.id}>
+                    <Product
+                        id={product.id}
+                        title={product.title}
+                        price={product.price}
+                        imgSrc={product.imgSrc}
+                        cartMode={true}
+                        onRemove={() => handleRemove(product.id!, cartItems.indexOf(product))}
+                    />
+                </li>
+            ))}
+        </ul>
+        <h3>Végösszeg: <span>{totalPrice}</span></h3>
     </div>
 }
 

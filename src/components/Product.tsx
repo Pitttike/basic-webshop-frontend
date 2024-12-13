@@ -8,8 +8,8 @@ function Product(props: ProductProps) {
     }
     return <div className="card">
         <h2>{props.title}</h2>
-        <img src={props.imgSrc} alt="termék kép" />
-        <div className="card-container">
+        <img className="card-img" src={props.imgSrc} alt="termék kép" />
+        <div className="card-bottom">
             <p>{props.price}</p>
             {
                 /*Show button if user is logged in*/

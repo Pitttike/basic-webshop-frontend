@@ -1,4 +1,7 @@
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
+
+
 
 
 function Menu() {
@@ -6,13 +9,14 @@ function Menu() {
     return <nav>
         <h2>PCX Webshop</h2>
         <input type="" name="search" placeholder="Keresés..."/>
-        {token ? ( <button onClick={logout}>Kijelentkezés</button> ) :
+        {token ? (<button className="logout" onClick={logout}>Kijelentkezés</button>) :
             (<>
-                <a href="/register">Regisztráció</a>
-                <a href="/login">Bejelentkezés</a>
+                <a className="register-ref" href="/register">Regisztráció</a>
+                <a className="login-ref" href="/login">Bejelentkezés</a>
+                
             </>)}
 
-        <a href="/cart" className="refer-to-cart"/>
+        <a href="/cart"> <img className="cart-img" src="trolley.png" alt="kosár" /></a>
     </nav>
 }
 

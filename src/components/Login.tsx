@@ -26,11 +26,19 @@ function Login() {
         alert("A bemeneti adatok érvénytelenek!")
     }
     return <form method="POST" onSubmit={handleSubmit}>
-        <h1>Bejelentkezés</h1><br />
-        <label htmlFor="username">Felhasználónév</label> <br />
-        <input type="text" name="username" onChange={handleInput} /> <br />
-        <label htmlFor="password">Jelszó:</label> <br />
+        <h1>Bejelentkezés</h1>
+        <div className="username">
+
+        <label htmlFor="username">Felhasználónév</label> 
+        <input type="text" name="username" onChange={handleInput} /> 
+        </div>
+        <div className="password">
+
+
+        <label htmlFor="password">Jelszó:</label> 
         <input type="password" name="password" onChange={handleInput}/>
+        </div>
+
         <input type="submit"/>
 
     </form>

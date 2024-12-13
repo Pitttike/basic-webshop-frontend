@@ -14,6 +14,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <div className="app-container">
+   
           <Menu />
           <Routes>
             <Route path="/" element={<Navigate to="/products" replace />} />
@@ -27,10 +28,12 @@ function App() {
                   <Cart />
                 </ProtectedRoute>
               }
-            />
+              />
           </Routes>
-          <Footer />
+            
+
         </div>
+          <Footer />
       </AuthProvider>
     </BrowserRouter>
   )

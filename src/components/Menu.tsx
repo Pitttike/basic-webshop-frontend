@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthProvider";
 function Menu() {
     const { token, logout } = useAuth();
     return <nav>
-        <h2>PCX Webshop</h2>
+        <h2><a href="/products">PCX Webshop</a></h2>
         <input type="" name="search" placeholder="Keresés..."/>
         {token ? (<button className="logout" onClick={logout}>Kijelentkezés</button>) :
             (<>

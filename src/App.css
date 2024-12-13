@@ -57,6 +57,16 @@ nav {
     border-radius: 3px;
 }
 
+nav > h2 > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+nav > h2 > a:hover {
+    color: red;
+}
+
 nav>.register-ref,
 .login-ref {
     background-color: var(--footer-bg);

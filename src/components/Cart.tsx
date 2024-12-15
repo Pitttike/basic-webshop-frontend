@@ -1,44 +1,58 @@
 import { useEffect, useMemo, useState } from "react";
 import ProductProps from "../ProductProps";
-import User from "../User";
 import Product from "./Product";
 import { useAuth } from "../contexts/AuthProvider";
+
+interface CartEntry {
+    product: ProductProps,
+    quantity: number
+}
+
 function Cart() {
     const auth = useAuth();
-
-    const [cartItems, setCartItems] = useState<ProductProps[]>([]);
+    const [cartItems, setCartItems] = useState<CartEntry[]>([]);
     const totalPrice = useMemo(() => {
-        return cartItems.reduce((totalPrice, cartitem) => cartitem.price + totalPrice, 0);
+        if (!cartItems?.length) return 0;
+        return cartItems.reduce((totalPrice, cartentry) =>
+            cartentry.product.price * cartentry.quantity + totalPrice, 0);
     }, [cartItems]);
-
     useEffect(() => {
         async function load() {
             if (!auth?.user?.id) return;
-            const result = await fetch(`http://localhost:3000/users/${auth?.user?.id}`)
-            const user: User = await result.json();
-            setCartItems(user.cartItems!);
-
+            const result = await fetch(`http://localhost:3000/cartentry`, {
+                headers: {
+                    "Authorization": "Bearer " + auth.token
+                }
+            })
+            const cartEntries: CartEntry[] = await result.json();
+            setCartItems(cartEntries);
+            console.log(cartItems)
         }
         load();
     }, [])
 
-    const handleRemove = async (productId: number, cartIndex: number) => {
-        await fetch(`http://localhost:3000/users/${auth?.user?.id}/cartItems/${productId}`, { method: 'DELETE' });
-        setCartItems(prevItems => prevItems.filter((_, index) => index !== cartIndex));
+    const handleRemove = async (productId: number) => {
+        await fetch(`http://localhost:3000/cartentry/${productId}`, {
+            method: 'DELETE', 
+            headers: {
+                "Authorization": "Bearer " + auth.token
+            }
+        });
+        setCartItems(prevItems => prevItems.filter((item) => item.product.id !== productId));
     }
-    
+
     return <div>
         <h1>Kosár</h1>
         <ul>
-            {cartItems.map((product) => (
-                <li key={product.id}>
+            {cartItems.map((cartentry) => (
+                <li key={cartentry.product.id}>
                     <Product
-                        id={product.id}
-                        title={product.title}
-                        price={product.price}
-                        imgSrc={product.imgSrc}
+                        id={cartentry.product.id}
+                        title={cartentry.product.title}
+                        price={cartentry.product.price}
+                        imgSrc={cartentry.product.imgSrc}
                         cartMode={true}
-                        onRemove={() => handleRemove(product.id!, cartItems.indexOf(product))}
+                        onRemove={() => handleRemove(cartentry.product.id!)}
                     />
                 </li>
             ))}

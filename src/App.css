@@ -167,6 +167,7 @@ footer span {
     width: 250px;
     background-color: var(--card-bg);
     border-radius: 16px;
+    z-index: 0;
     box-shadow: 0 4px 20px var(--shadow-soft);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -182,12 +183,8 @@ footer span {
     justify-content: center;
     text-align: center;
     min-height: 65px;
-}
-
-
-
-
-
+    
+}   
 
 .card-img {
     border-radius: 5px 5px 0 0;
@@ -286,4 +283,60 @@ form>.username,
     gap: 5px;
     flex-direction: column;
     width: 50%;
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 500;
+    font-size: large;
+    text-align: center;
+    padding: 20px;
+    border-radius: 20px;
+    border: solid 3px darkred;
+    bottom: 20px;
+    right: 40px;
+    color: white;
+    background-color: red;
+    box-shadow: darkred 1px 1px 1px;
+    animation: fadeOutAnimation ease-in 5s;
+    animation-iteration-count: 1;
+    height: 8%;
+    width: 25%;
+}
+
+.success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: fixed;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 500;
+    font-size: x-large;
+    padding: 20px;
+    border-radius: 20px;
+    border: solid 3px green;
+    bottom: 20px;
+    right: 40px;
+    color: white;
+    background-color: rgb(119, 190, 13);
+    box-shadow: green 1px 1px 1px;
+    animation: fadeOutAnimation ease-in 5s;
+    animation-iteration-count: 1;
+    height: 8%;
+    width: 25%;
+}
+
+
+@keyframes fadeOutAnimation {
+    100% {
+        opacity: 0;
+    }
+    0% {
+        opacity: 1;
+    }
 }

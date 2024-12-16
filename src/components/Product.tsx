@@ -1,24 +1,24 @@
-import { useRef, useState } from "react"; // Import useRef
-import StatusMessage, { StatusMessageProps } from "./StatusMessage";
+import { useRef, useState } from "react";
+import StatusMessage from "./StatusMessage";
 import ProductProps from "../ProductProps";
 import { useAuth } from "../contexts/AuthProvider";
+import { ApiStatus } from "../types";
 
 function Product(props: ProductProps) {
     const auth = useAuth();
-    const [error, setError] = useState<StatusMessageProps | null>(null);
-    const [success, setSuccess] = useState<StatusMessageProps | null>(null)
-    const timerRef = useRef<number | null>(null); 
+    const [error, setError] = useState<ApiStatus | null>(null);
+    const [success, setSuccess] = useState<ApiStatus | null>(null)
+    const timerRef = useRef<number | null>(null);
 
     const addProductToCart = async (productId: number) => {
         if (timerRef.current) {
-            clearTimeout(timerRef.current); 
+            clearTimeout(timerRef.current);
             timerRef.current = null;
         }
-        
-        setError(null); 
+
+        setError(null);
         setSuccess(null);
         try {
-            
             const response = await fetch(`http://localhost:3000/cartentry`, {
                 headers: {
                     "Content-Type": "application/json",
@@ -26,28 +26,24 @@ function Product(props: ProductProps) {
                 },
                 method: "POST",
                 body: JSON.stringify({ productId: productId })
-                
             });
-            
+
             if (!response.ok) {
-                const errorData = await response.json();
-                setError(errorData);
-                timerRef.current = setTimeout(() => {
-
-                    setError(null);
-                    timerRef.current = null;
-                }, 4900);
-            } else {
-
-                setSuccess({message: "A termék sikeresen a kosárba helyezve"})
-                timerRef.current = setTimeout(() => {
-                    
-                    setSuccess(null);
-                    timerRef.current = null;
-                }, 4900);
+                const responseData = await response.json();
+                throw new Error(responseData.message)
             }
+
+            setSuccess({ message: "Sikeresen a kosárba helyezve" })
+            timerRef.current = setTimeout(() => {
+                setError(null);
+                timerRef.current = null;
+            }, 4900);
         } catch (err: any) {
-            console.error("Error adding product:", err);
+            setError({ message: err.message });
+            timerRef.current = setTimeout(() => {
+                setError(null);
+                timerRef.current = null;
+            }, 4900);
         }
     };
 
@@ -65,11 +61,11 @@ function Product(props: ProductProps) {
                 }
             </div>
             {error && (
-                <StatusMessage message={error.message} error={error.error} success={false} />
+                <StatusMessage success={false} message={error.message} />
             )}
-            {
-                success && (<StatusMessage success={true} message={success.message} />)
-            }
+            {success && (
+                <StatusMessage success={true} message={success.message} />
+            )}
         </div>
     );
 }

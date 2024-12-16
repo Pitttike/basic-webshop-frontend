@@ -57,13 +57,13 @@ nav {
     border-radius: 3px;
 }
 
-nav > h2 > a {
+nav>h2>a {
     text-decoration: none;
     cursor: pointer;
     color: #ffffff;
 }
 
-nav > h2 > a:hover {
+nav>h2>a:hover {
     color: red;
 }
 
@@ -183,8 +183,8 @@ footer span {
     justify-content: center;
     text-align: center;
     min-height: 65px;
-    
-}   
+
+}
 
 .card-img {
     border-radius: 5px 5px 0 0;
@@ -210,13 +210,13 @@ footer span {
 }
 
 .delete-button {
-    background-image: url('../public/trash.png');
+    background-image: url('/trash.png');
     width: 30px;
     height: 30px;
 }
 
 .cart-button {
-    background-image: url('../public/add-to-cart.png');
+    background-image: url('/add-to-cart.png');
     width: 30px;
     height: 30px;
 }
@@ -245,7 +245,7 @@ form {
     background-color: var(--card-bg);
 }
 
-form>div>input {
+.form-group>input {
     width: 100%;
     height: 40px;
     border-radius: 5px;
@@ -262,7 +262,12 @@ form>input[type=submit] {
     background-color: white;
 }
 
-form>input[type=submit]:hover {
+
+form>input[type=submit]:disabled:hover {
+    transform: none;
+}
+
+form>input[type=submit]:not(:disabled):hover {
     transition: transform 0.2s ease;
     cursor: pointer;
 }
@@ -271,13 +276,12 @@ form>input[type=submit]:active {
     transform: rotate(1turn);
 }
 
-form>div>input:hover,
+.form-group>input:hover,
 input:focus {
     transform: scale(1.05);
 }
 
-form>.username,
-.password {
+.form-group {
     font-size: x-large;
     display: flex;
     gap: 5px;
@@ -290,7 +294,7 @@ form>.username,
     align-items: center;
     justify-content: center;
     position: fixed;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 500;
     font-size: large;
     text-align: center;
@@ -304,7 +308,7 @@ form>.username,
     box-shadow: darkred 1px 1px 1px;
     animation: fadeOutAnimation ease-in 5s;
     animation-iteration-count: 1;
-    height: 8%;
+    height: 6%;
     width: 25%;
 }
 
@@ -314,9 +318,9 @@ form>.username,
     justify-content: center;
     text-align: center;
     position: fixed;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 500;
-    font-size: x-large;
+    font-size: large;
     padding: 20px;
     border-radius: 20px;
     border: solid 3px green;
@@ -325,9 +329,9 @@ form>.username,
     color: white;
     background-color: rgb(119, 190, 13);
     box-shadow: green 1px 1px 1px;
-    animation: fadeOutAnimation ease-in 5s;
+    animation: fadeOutAnimation ease-out 5s;
     animation-iteration-count: 1;
-    height: 8%;
+    height: 6%;
     width: 25%;
 }
 
@@ -336,6 +340,7 @@ form>.username,
     100% {
         opacity: 0;
     }
+
     0% {
         opacity: 1;
     }

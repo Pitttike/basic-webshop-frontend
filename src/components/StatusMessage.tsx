@@ -1,14 +1,8 @@
 
 import { createPortal } from 'react-dom';
+import { ApiStatus} from '../types';
 
-export interface StatusMessageProps {
-    message: string;
-    error?: string
-    status?: number
-    success?: boolean
-}
-
-function StatusMessage({ message, error, success }: StatusMessageProps) {
+function StatusMessage({ message, success }: ApiStatus) {
 
     if (success) {
         return createPortal(
@@ -18,7 +12,8 @@ function StatusMessage({ message, error, success }: StatusMessageProps) {
     } else {
 
         return createPortal(
-            <div className={"error"}> {message} <br /> &#40;{error}&#41;</div>,
+            <div className={"error"}> {message} 
+             </div>,
             document.body
         );
     }

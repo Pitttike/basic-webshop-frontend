@@ -7,10 +7,10 @@ function Login() {
         password: ""
     });
     const auth = useAuth();
-    if (auth.user) {return;}
+    if (auth.user) { return; }
     const handleInput = (e: any) => {
-        const {name, value} = e.target;
-        setInput((prev)=>({
+        const { name, value } = e.target;
+        setInput((prev) => ({
             ...prev,
             [name]: value,
         })
@@ -27,19 +27,19 @@ function Login() {
     }
     return <form method="POST" onSubmit={handleSubmit}>
         <h1>Bejelentkezés</h1>
-        <div className="username">
+        <div className="form-group">
 
-        <label htmlFor="username">Felhasználónév</label> 
-        <input type="text" name="username" onChange={handleInput} /> 
+            <label htmlFor="username">Felhasználónév</label>
+            <input type="text" name="username" onChange={handleInput} />
         </div>
-        <div className="password">
+        <div className="form-group">
 
 
-        <label htmlFor="password">Jelszó:</label> 
-        <input type="password" name="password" onChange={handleInput}/>
+            <label htmlFor="password">Jelszó:</label>
+            <input type="password" name="password" onChange={handleInput} />
         </div>
 
-        <input type="submit"/>
+        <input type="submit" />
 
     </form>
 }

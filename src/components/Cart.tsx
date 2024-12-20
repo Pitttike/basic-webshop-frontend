@@ -1,21 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
-import ProductProps from "../ProductProps";
-import Product from "./Product";
+import { CartEntry } from "../types";
 import { useAuth } from "../contexts/AuthProvider";
+import CartItem from "./CartItem";
 
-interface CartEntry {
-    product: ProductProps,
-    quantity: number
-}
 
 function Cart() {
     const auth = useAuth();
     const [cartItems, setCartItems] = useState<CartEntry[]>([]);
+
     const totalPrice = useMemo(() => {
         if (!cartItems?.length) return 0;
-        return cartItems.reduce((totalPrice, cartentry) =>
-            cartentry.product.price * cartentry.quantity + totalPrice, 0);
+        return cartItems.reduce((total, cartentry) =>
+            cartentry.product.price * cartentry.quantity + total, 0
+        );
     }, [cartItems]);
+
+    const handleQuantityChange = (productId: number, newQuantity: number) => {
+        setCartItems(prevItems => prevItems.map(item =>
+            item.product.id === productId
+                ? { ...item, quantity: newQuantity }
+                : item
+        ));
+    }
+
     useEffect(() => {
         async function load() {
             if (!auth?.user?.id) return;
@@ -26,14 +33,13 @@ function Cart() {
             })
             const cartEntries: CartEntry[] = await result.json();
             setCartItems(cartEntries);
-            console.log(cartItems)
         }
         load();
-    }, [])
+    }, [auth?.user?.id, auth.token])
 
     const handleRemove = async (productId: number) => {
         await fetch(`http://localhost:3000/cartentry/${productId}`, {
-            method: 'DELETE', 
+            method: 'DELETE',
             headers: {
                 "Authorization": "Bearer " + auth.token
             }
@@ -41,23 +47,26 @@ function Cart() {
         setCartItems(prevItems => prevItems.filter((item) => item.product.id !== productId));
     }
 
-    return <div>
-        <h1>Kosár</h1>
-        <ul>
-            {cartItems.map((cartentry) => (
-                <li key={cartentry.product.id}>
-                    <Product
-                        id={cartentry.product.id}
-                        title={cartentry.product.title}
-                        price={cartentry.product.price}
-                        imgSrc={cartentry.product.imgSrc}
-                        cartMode={true}
-                        onRemove={() => handleRemove(cartentry.product.id!)}
-                    />
-                </li>
-            ))}
-        </ul>
-        <h3>Végösszeg: <span>{totalPrice}</span></h3>
+    return <div className="cart-container">
+        <div className="cart-without-sum">
+            <h1>Kosár</h1>
+            <ul className="cart-list">
+                {cartItems.map((cartentry) => (
+                    <li key={cartentry.product.id}>
+                        <CartItem
+                            id={cartentry.product.id}
+                            title={cartentry.product.title}
+                            price={cartentry.product.price}
+                            imgSrc={cartentry.product.imgSrc}
+                            quantity={cartentry.quantity}
+                            onQuantityChange={handleQuantityChange}
+                            onRemove={() => handleRemove(cartentry.product.id!)}
+                        />
+                    </li>
+                ))}
+            </ul>
+        </div>
+        <h3>Végösszeg:&nbsp;<span>{Math.round(totalPrice)}</span></h3>
     </div>
 }
 

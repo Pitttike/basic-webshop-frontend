@@ -1,30 +1,46 @@
-import { FormEvent, useState } from "react"
+// components/Register.tsx
+import { FormEvent } from "react";
+import StatusMessage from "./StatusMessage";
+import { useForm } from "../hooks/useForm";
+import { useStatusMessage } from "../hooks/useStatusMessage";
 import { useAuth } from "../contexts/AuthProvider";
 
 function Login() {
-    const [input, setInput] = useState({
+
+    const auth = useAuth();
+    if (auth.user) { return; }
+
+    const { input, handleInput, validateForm } = useForm({
         username: "",
         password: ""
     });
-    const auth = useAuth();
-    if (auth.user) { return; }
-    const handleInput = (e: any) => {
-        const { name, value } = e.target;
-        setInput((prev) => ({
-            ...prev,
-            [name]: value,
-        })
-        )
-    }
 
-    const handleSubmit = (e: FormEvent) => {
+
+       const {error,
+        setError,
+        clearStatus
+    } = useStatusMessage();
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (input.username !== "" && input.password !== "") {
-            auth.loginAction(input);
+        
+        const validationError = validateForm();
+        if (validationError) {
+            setError({ message: validationError.message });
             return;
         }
-        alert("A bemeneti adatok érvénytelenek!")
-    }
+
+        clearStatus();
+        
+        try {
+            await auth.loginAction(input)
+        } catch (err) {
+            setError({ 
+                message: err instanceof Error ? err.message : "Valami hiba történt..." 
+            });
+        }
+    };
+
     return <form method="POST" onSubmit={handleSubmit}>
         <h1>Bejelentkezés</h1>
         <div className="form-group">
@@ -39,7 +55,8 @@ function Login() {
             <input type="password" name="password" onChange={handleInput} />
         </div>
 
-        <input type="submit" />
+        <input type="submit" disabled={!!error} />
+        {error && <StatusMessage message={error.message} success={false} />}
 
     </form>
 }

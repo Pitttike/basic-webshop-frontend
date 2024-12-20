@@ -22,7 +22,6 @@ function Register() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         
-        // Form validation
         const validationError = validateForm();
         if (validationError) {
             setError({ message: validationError.message });

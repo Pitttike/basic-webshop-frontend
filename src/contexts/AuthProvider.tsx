@@ -1,6 +1,6 @@
 import { useContext, createContext, useState, useEffect } from "react";
-import User from '../User'
 import { Navigate, useNavigate } from "react-router-dom";
+import { User } from "../types";
 
 type LoginType = {
   username: string;
@@ -72,7 +72,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error(res.message);
       }
     } catch (err: any) {
-      console.error(err.message);
+      throw new Error(err.message)
     }
   };
   

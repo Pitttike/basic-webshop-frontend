@@ -32,7 +32,9 @@ body {
 
 /* Layout Components */
 .app-container {
-    width: 1300px;
+    width: 90%;
+    max-width: 1300px;
+    padding: 0 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -193,7 +195,7 @@ nav > .register-ref:hover,
 
 .product-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 250px);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 24px;
     justify-content: center;
     list-style-type: none;
@@ -413,12 +415,14 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 1000px;
+    width: 90%;
+    max-width: 1000px;
     height: 100%;
     border-radius: 10px;
     gap: 50px;
     margin: 8%;
     background-color: var(--card-bg);
+    padding: 20px;
 }
 
 .form-group {
@@ -531,3 +535,137 @@ footer span {
     0% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+/* Tablet and smaller devices */
+@media only screen and (max-width: 1024px) {
+    .app-container {
+      width: 90%;
+      padding: 0 16px;
+    }
+    
+    .product-list {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+  
+    form {
+      width: 90%;
+    }
+
+    form > input[type=submit] {
+        width: 50%; 
+    }
+
+    .cart-container > h3 {
+        width: 30%;
+    }
+  }
+  
+  /* Mobile devices */
+  @media only screen and (max-width: 700px) {
+    nav {
+      flex-direction: column;
+      padding: 10px;
+    }
+  
+    .card {
+      width: 150px;
+    }
+  
+    .card h2 {
+      font-size: small;
+    }
+  
+    .product-list {
+      grid-template-columns: repeat(auto-fill, 150px);
+    }
+  
+    .cart-list > li {
+      flex-direction: column;
+      height: auto;
+      padding: 10px;
+    }
+  
+    .cart-container > h3 {
+      width: 90%;
+    }
+  
+    footer {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+  
+    .form-group {
+      width: 90%;
+    }
+
+  }
+  
+  /* Small mobile devices */
+  @media only screen and (max-width: 480px) {
+    .product-list {
+      padding: 10px;
+    }
+  
+    .filter-fields {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .products-container >.filter-fields > .search  {
+      width: 100%;
+    }
+
+    form > input[type=submit] {
+      width: 60%;
+    }
+
+    .error {
+        width: 80%;
+    }
+
+    .success {
+        width: 80%;
+    }
+
+
+    .cart-container > .cart-without-sum {
+        align-items: center;
+        width: 100%;
+    }
+
+    .cart-list {
+        align-items: center;
+        justify-content: center;
+        width: 80%;  /* Ensure full width */
+        padding: 0;   /* Remove any padding that might affect centering */
+    }
+
+    .cart-list > li {
+        gap: 10px;
+    }
+
+    .cart-list > li > .card {
+        width: 250px;
+    }
+
+    .change-quantity {
+        width: 100%;
+    }
+
+    .cart-list > li > .card > img {
+        width: 100px;
+    }
+
+    .cart-list > li > .card > h2 {
+        font-size: small;
+        width: 30%;
+    }
+
+
+    .cart-list > li > .card > .card-right {
+        width: 20%;
+        font-size: small;
+    }
+  }
